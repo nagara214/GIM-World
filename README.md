@@ -41,6 +41,7 @@ Qiulin Wang<sup>2</sup>, Xintao Wang<sup>2</sup>, Pengfei Wan<sup>2</sup>, Xiang
   - [Options](#options)
   - [Reproducing MIND mem_test](#reproducing-mind-mem_test)
 - [📊 Results](#-results)
+- [🗂️ Code layout](#️-code-layout)
 - [📝 TODO](#-todo)
 - [📚 Citation](#-citation)
 - [📧 Contact](#-contact)
@@ -53,7 +54,7 @@ Video world models generate the future from past observations and actions, but a
 **GIM-World** is a geometry-aware implicit memory for video world models built on a Wan2.1-1.3B DiT backbone:
 
 - **Implicit Memory Encoder** — two blocks of compact self-attention + FFN turn a variable-length, camera-indexed history into a fixed set of memory tokens; the tokens are concatenated with the target latents to condition the backbone. The encoder runs in < 0.3 % of the backbone's time.
-- **Camera-Queryable Geometry Supervision** (training only) — a ray-map query of a sampled history camera reads the memory and is matched against frozen VGGT features, forcing the memory to store view-consistent geometry rather than an appearance cache. The geometry head and teacher are discarded at inference.
+- **Camera-Queryable Geometry Supervision** (training only) — a ray-map query of a sampled history camera reads the memory and is matched against frozen VGGT features, forcing the memory to store view-consistent geometry rather than an appearance cache. The geometry head and teacher are discarded at inference; the head and loss are provided for reference in [`gim/models/geometry_head.py`](gim/models/geometry_head.py) but are not used by `generate.py`.
 - **Information-Guided Pruning** — before encoding, the history is reduced to a budget of K latents by greedily maximizing mutual information under a pose–time Gaussian-process kernel, so encoding cost stays bounded as the rollout grows.
 
 <p align="center">
@@ -218,11 +219,33 @@ Quantitative comparison on the MIND memory test (from the paper, Table 1). Memor
 </tbody>
 </table>
 
+## 🗂️ Code layout
+
+```
+generate.py                 # single inference entry point
+make_trajectory.py          # author action.json from a pose string
+download_models.py          # fetch Wan2.1 VAE/T5 + GIM-World checkpoints (+ example clip)
+gim/
+  pipeline.py               # GIMWorldPipeline: encode -> prune -> rollout -> decode
+  models/
+    memory_encoder.py       # Implicit Memory Encoder (Sec. 3.2)
+    dit.py                  # memory-conditioned Wan2.1 DiT, camera injection, chunk sampler
+    action_embedding.py     # action embeddings
+    geometry_head.py        # camera-queryable geometry head + L_geo (Sec. 3.3, training only)
+  utils/
+    pruning.py              # information-guided pruning (Sec. 3.4)
+    camera.py               # poses, relative frames, latent <-> frame alignment
+    video.py                # streaming Wan VAE encode / decode, mp4 I/O
+    trajectory.py           # pose-string / keyframe -> action.json
+wan/                        # trimmed Wan2.1 (DiT, VAE, umT5, flow-matching solver)
+```
+
 ## 📝 TODO
 
 - [x] Inference code
 - [x] First-person / third-person checkpoints
-- [ ] Training code
+- [x] Geometry head + loss (reference implementation)
+- [ ] Training script
 
 ## 📚 Citation
 
