@@ -25,7 +25,7 @@ Qiulin Wang<sup>2</sup>, [Xintao Wang](https://xinntao.github.io/)<sup>2</sup>, 
 
 ## 🔥 News
 
-- **[2026-09]** Inference code and checkpoints (first-person / third-person MIND) released.
+- **[2026-09]** Code and checkpoints (first-person / third-person MIND) released.
 - **[2026-06]** Paper on [arXiv](https://arxiv.org/abs/2606.02436).
 - **[2026]** GIM-World is accepted to SIGGRAPH Asia 2026.
 
@@ -42,7 +42,6 @@ Qiulin Wang<sup>2</sup>, [Xintao Wang](https://xinntao.github.io/)<sup>2</sup>, 
   - [Reproducing MIND mem_test](#reproducing-mind-mem_test)
 - [📊 Results](#-results)
 - [🗂️ Code layout](#️-code-layout)
-- [📝 TODO](#-todo)
 - [📚 Citation](#-citation)
 - [📧 Contact](#-contact)
 - [🙏 Acknowledgements](#-acknowledgements)
@@ -239,13 +238,6 @@ gim/
     trajectory.py           # pose-string / keyframe -> action.json
 wan/                        # trimmed Wan2.1 (DiT, VAE, umT5, flow-matching solver)
 ```
-
-## 📝 TODO
-
-- [x] Inference code
-- [x] First-person / third-person checkpoints
-- [x] Geometry head + loss (reference implementation)
-- [ ] Training script
 
 ## 📚 Citation
 

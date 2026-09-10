@@ -143,7 +143,7 @@ tags:
 
 # GIM-World: Geometry-Aware Implicit Memory for Video World Models
 
-Inference checkpoints for **GIM-World** (SIGGRAPH Asia 2026).
+Checkpoints for **GIM-World** (SIGGRAPH Asia 2026).
 Code: https://github.com/nagara214/GIM-World · Paper: https://arxiv.org/abs/2606.02436 · Project page: https://gim-world.github.io/
 
 | Folder | Trained on | Notes |
