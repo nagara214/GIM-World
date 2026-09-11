@@ -6,12 +6,12 @@ the ModelScope repo `nagara214/cam_ssm_ckpts` (optimizer states, RNG states
 and the training-only geometry head are skipped), converts the small `.pt`
 state dicts to safetensors with the released key names, writes a
 `config.json` per perspective, verifies that the released modules load them
-with strict=True, and optionally uploads to ModelScope / Hugging Face.
+with strict=True, and optionally uploads to ModelScope.
 
     python scripts/repack_weights.py --work_dir /tmp/gim_weights
     python scripts/repack_weights.py --work_dir /tmp/gim_weights --upload
 
-Requires: torch (CPU is fine), safetensors, modelscope, huggingface_hub.
+Requires: torch (CPU is fine), safetensors, modelscope.
 """
 
 import argparse
@@ -30,7 +30,6 @@ from gim.models.memory_encoder import MemoryEncoder, convert_legacy_state_dict  
 
 SRC_REPO = "nagara214/cam_ssm_ckpts"
 MS_DST = "nagara214/GIM-World"
-HF_DST = "WeiZhengxuan/GIM-World"
 
 PERSPECTIVES = {"first_person": "gim_1st", "third_person": "gim_3rd"}
 
@@ -180,23 +179,16 @@ result = pipe("path/to/clip_dir")   # video.mp4 + action.json
 """
 
 
-def upload(dst_root, to_modelscope=True, to_hf=True):
-    if to_hf:
-        from huggingface_hub import HfApi
-        api = HfApi()
-        api.create_repo(HF_DST, repo_type="model", exist_ok=True)
-        api.upload_large_folder(repo_id=HF_DST, repo_type="model", folder_path=str(dst_root))
-        print(f"uploaded to https://huggingface.co/{HF_DST}")
-    if to_modelscope:
-        from modelscope.hub.api import HubApi
-        api = HubApi()
-        try:
-            api.create_model(MS_DST, visibility=5, license="Apache License 2.0")
-        except Exception as e:  # already exists
-            print(f"  (create_model skipped: {e})")
-        api.upload_folder(repo_id=MS_DST, folder_path=str(dst_root), repo_type="model",
-                          commit_message="Release GIM-World inference weights")
-        print(f"uploaded to https://www.modelscope.cn/models/{MS_DST}")
+def upload(dst_root):
+    from modelscope.hub.api import HubApi
+    api = HubApi()
+    try:
+        api.create_model(MS_DST, visibility=5, license="Apache License 2.0")
+    except Exception as e:  # already exists
+        print(f"  (create_model skipped: {e})")
+    api.upload_folder(repo_id=MS_DST, folder_path=str(dst_root), repo_type="model",
+                      commit_message="Release GIM-World weights")
+    print(f"uploaded to https://www.modelscope.cn/models/{MS_DST}")
 
 
 def main():
@@ -205,8 +197,6 @@ def main():
     p.add_argument("--perspectives", nargs="+", default=list(PERSPECTIVES),
                    choices=list(PERSPECTIVES))
     p.add_argument("--upload", action="store_true")
-    p.add_argument("--no_hf", action="store_true")
-    p.add_argument("--no_modelscope", action="store_true")
     args = p.parse_args()
 
     dst_root = Path(args.work_dir) / "GIM-World"
@@ -220,7 +210,7 @@ def main():
     print(f"repacked to {dst_root}")
 
     if args.upload:
-        upload(dst_root, to_modelscope=not args.no_modelscope, to_hf=not args.no_hf)
+        upload(dst_root)
 
 
 if __name__ == "__main__":

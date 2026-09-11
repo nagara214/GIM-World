@@ -1,24 +1,21 @@
 """
-Download the models required by GIM-World.
+Download the models required by GIM-World from ModelScope.
 
-    python download_models.py                         # from Hugging Face
-    python download_models.py --source modelscope     # from ModelScope (CN mirror)
+    python download_models.py                  # Wan2.1 VAE / umT5 + GIM-World checkpoints
+    python download_models.py --with_example   # also fetch one MIND clip for the quick start
 
 Downloads
   1. Wan-AI/Wan2.1-T2V-1.3B  (VAE, umT5 text encoder, tokenizer)
-  2. GIM-World checkpoints   (first_person/, third_person/)
+  2. nagara214/GIM-World     (first_person/, third_person/)
 
-and prints the paths to pass to generate.py / run.sh. Add `--with_example`
-to also fetch one MIND mem_test clip into assets/examples/demo_scene for the
-quick start.
+and prints the paths to pass to generate.py / run.sh. The example clip comes
+from the MIND dataset on Hugging Face (CSU-JPG/MIND).
 """
 
 import argparse
 import os
 import shutil
 
-HF_WAN = "Wan-AI/Wan2.1-T2V-1.3B"
-HF_GIM = "WeiZhengxuan/GIM-World"
 MS_WAN = "Wan-AI/Wan2.1-T2V-1.3B"
 MS_GIM = "nagara214/GIM-World"
 
@@ -31,20 +28,7 @@ EXAMPLE_DIR = os.path.join("assets", "examples", "demo_scene")
 WAN_PATTERNS = ["Wan2.1_VAE.pth", "models_t5_umt5-xxl-enc-bf16.pth", "google/*"]
 
 
-def download_hf(local_dir, skip_wan, skip_gim):
-    from huggingface_hub import snapshot_download
-    paths = {}
-    if not skip_wan:
-        paths["wan_dir"] = snapshot_download(
-            HF_WAN, local_dir=os.path.join(local_dir, "Wan2.1-T2V-1.3B"),
-            allow_patterns=WAN_PATTERNS)
-    if not skip_gim:
-        paths["gim_dir"] = snapshot_download(
-            HF_GIM, local_dir=os.path.join(local_dir, "GIM-World"))
-    return paths
-
-
-def download_modelscope(local_dir, skip_wan, skip_gim):
+def download_models(local_dir, skip_wan, skip_gim):
     from modelscope import snapshot_download
     paths = {}
     if not skip_wan:
@@ -69,7 +53,6 @@ def download_example(dest=EXAMPLE_DIR):
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("--source", choices=["hf", "modelscope"], default="hf")
     p.add_argument("--local_dir", default="checkpoints")
     p.add_argument("--skip_wan", action="store_true")
     p.add_argument("--skip_gim", action="store_true")
@@ -78,8 +61,7 @@ def main():
     args = p.parse_args()
 
     os.makedirs(args.local_dir, exist_ok=True)
-    fn = download_hf if args.source == "hf" else download_modelscope
-    paths = fn(args.local_dir, args.skip_wan, args.skip_gim)
+    paths = download_models(args.local_dir, args.skip_wan, args.skip_gim)
     if args.with_example:
         paths["example"] = download_example()
 

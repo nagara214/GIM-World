@@ -4,7 +4,8 @@ diffusers>=0.31.0
 transformers>=4.49.0
 tokenizers>=0.20.3
 safetensors>=0.4.0
-huggingface_hub>=0.25.0
+modelscope>=1.20.0
+huggingface_hub>=0.25.0   # only for the MIND example clip (dataset hosted on HF)
 numpy>=1.23.5,<2
 scipy
 einops

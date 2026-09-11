@@ -12,7 +12,6 @@ Qiulin Wang<sup>2</sup>, [Xintao Wang](https://xinntao.github.io/)<sup>2</sup>, 
 
 <a href="https://gim-world.github.io/"><img src="https://img.shields.io/badge/Project%20Page-333399.svg?logo=homepage" height=22px></a>
 <a href="https://arxiv.org/abs/2606.02436"><img src="https://img.shields.io/badge/arXiv-2606.02436-b31b1b.svg?logo=arxiv" height=22px></a>
-<a href="https://huggingface.co/WeiZhengxuan/GIM-World"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-d96902.svg" height=22px></a>
 <a href="https://www.modelscope.cn/models/nagara214/GIM-World"><img src="https://img.shields.io/badge/ModelScope-Models-624aff.svg" height=22px></a>
 
 </div>
@@ -74,19 +73,17 @@ Tested with PyTorch >= 2.4 and CUDA 12.x on a single NVIDIA GPU (bf16 VAE / T5, 
 ## ⬇️ Download Models
 
 ```bash
-# Hugging Face (default) — adds one MIND example clip for the quick start
+# Wan2.1 VAE / umT5 + GIM-World checkpoints from ModelScope,
+# plus one MIND example clip for the quick start
 python download_models.py --with_example
-
-# ModelScope mirror
-python download_models.py --source modelscope --with_example
 ```
 
-This fetches the Wan2.1-T2V-1.3B VAE / umT5 text encoder and the GIM-World checkpoints, and prints the paths to use below.
+This fetches the Wan2.1-T2V-1.3B VAE / umT5 text encoder and the GIM-World checkpoints, and prints the paths to use below. Checkpoints are hosted on ModelScope: [nagara214/GIM-World](https://www.modelscope.cn/models/nagara214/GIM-World).
 
-| Checkpoint | Trained on | Download |
-|---|---|---|
-| `GIM-World/first_person` | MIND first-person split | [HF](https://huggingface.co/WeiZhengxuan/GIM-World/tree/main/first_person) · [ModelScope](https://www.modelscope.cn/models/nagara214/GIM-World/files) |
-| `GIM-World/third_person` | MIND third-person split | [HF](https://huggingface.co/WeiZhengxuan/GIM-World/tree/main/third_person) · [ModelScope](https://www.modelscope.cn/models/nagara214/GIM-World/files) |
+| Checkpoint | Trained on |
+|---|---|
+| `GIM-World/first_person` | MIND first-person split |
+| `GIM-World/third_person` | MIND third-person split |
 
 Each checkpoint folder holds `transformer/` (DiT), `memory_encoder.safetensors`, `camera_proj.safetensors`, `action_embedding.safetensors` and a `config.json` with the inference hyper-parameters (480×832, 20-latent chunks, pruning budget 200).
 
