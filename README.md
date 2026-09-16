@@ -4,7 +4,7 @@
 
 <h4>SIGGRAPH Asia 2026</h4>
 
-[Zhengxuan Wei](https://zhengxuanwei.top/)<sup>1,2\*</sup>, [Xu Guo](https://github.com/Guoxu1233)<sup>3,2\*</sup>, [Xinghui Li](https://crayon-shinchan.github.io/xinghui99.github.io/)<sup>2\*†</sup>, [Xunzhi Xiang](https://xbxsxp9.github.io/)<sup>1</sup>, Min Wei<sup>2</sup>, Yiran Zhu<sup>2</sup>,
+[Zhengxuan Wei](https://zhengxuanwei.top/)<sup>1,2\*</sup>, [Xu Guo](https://guoxu1233.github.io/homepage/)<sup>3,2\*</sup>, [Xinghui Li](https://crayon-shinchan.github.io/xinghui99.github.io/)<sup>2\*†</sup>, [Xunzhi Xiang](https://xbxsxp9.github.io/)<sup>1</sup>, Min Wei<sup>2</sup>, Yiran Zhu<sup>2</sup>,
 Qiulin Wang<sup>2</sup>, [Xintao Wang](https://xinntao.github.io/)<sup>2</sup>, [Pengfei Wan](https://magicwpf.github.io/)<sup>2</sup>, Xiangwang Hou<sup>3</sup>, [Qi Fan](https://fanq15.github.io/)<sup>1†</sup>
 
 <sup>1</sup>Nanjing University &nbsp; <sup>2</sup>Kling Team, Kuaishou Technology &nbsp; <sup>3</sup>Tsinghua University
